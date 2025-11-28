@@ -1,5 +1,6 @@
-import { useEffect } from "react";
-import axios from "axios";
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import instance from "../api/axios.js";
 import QuizEditor from "../components/QuizEditor.jsx";
 
 function AdminDashboard() {
@@ -10,7 +11,7 @@ function AdminDashboard() {
       try {
         const token = localStorage.getItem("token");
 
-        const response = await axios.get("/quizzes", {
+        const response = await instance.get("/quizzes", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -28,13 +29,20 @@ function AdminDashboard() {
     <div>
       <h2>Admin Dashboard</h2>
       <QuizEditor />
-
-      <h3>Existing Quizzes</h3>
-      <ul>
-        {quizzes.map((quiz) => (
-          <li key={quiz._id}>{quiz.title}</li>
-        ))}
-      </ul>
+      {quizzes.length === 0 ? (
+        <p>No quizzes available. Please create a new quiz.</p>
+      ) : (
+        <>
+          <h3>Existing Quizzes</h3>
+          <ul>
+            {quizzes.map((quiz) => (
+              <li key={quiz._id}>
+                <Link to={`/quiz/${quiz._id}`}>{quiz.title}</Link>
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
     </div>
   );
 }
