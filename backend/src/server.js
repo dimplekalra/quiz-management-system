@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import authRoutes from "./routes/authRoutes.js";
+import quizRoutes from "./routes/quizRoutes.js";
 import { errorMiddleware } from "./middleware/errorMiddleware.js";
 import { connectDB } from "./config/db.js";
 
@@ -13,7 +14,8 @@ app.use(express.json());
 
 connectDB();
 
-app.use("/api/admin", authRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/quizzes", quizRoutes);
 
 app.use(errorMiddleware);
 
